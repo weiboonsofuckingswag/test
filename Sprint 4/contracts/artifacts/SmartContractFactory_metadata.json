@@ -1,0 +1,114 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "contract PolicySmartContract",
+						"name": "a",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "newMessage",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "policy",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "duration",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "date_of_policy",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "phone",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "price",
+						"type": "string"
+					}
+				],
+				"name": "Policy",
+				"type": "event"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "string[]",
+						"name": "informationArray",
+						"type": "string[]"
+					}
+				],
+				"name": "update",
+				"outputs": [
+					{
+						"internalType": "contract PolicySmartContract",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/clientfactory.sol": "SmartContractFactory"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/clientfactory.sol": {
+			"keccak256": "0x3863d3174855b29ae2159d7c587848052654965b442e4491ca825b9f06145253",
+			"urls": [
+				"bzz-raw://00bd27ca00be15afcd9b02604db88acc4924096572bbbb3d1e0b0e45cf1a0040",
+				"dweb:/ipfs/QmPPcSiizF5yDoGki9qTZyRY579jQ5kVF8tWHqiCCJA72o"
+			]
+		}
+	},
+	"version": 1
+}

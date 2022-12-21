@@ -1,0 +1,81 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "plus",
+						"type": "uint256"
+					}
+				],
+				"name": "Plus",
+				"type": "event"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "add",
+						"type": "uint256"
+					}
+				],
+				"name": "Add",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getInput",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/alarm.sol": "Alarm"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/alarm.sol": {
+			"keccak256": "0x22d8bbf7d1241ce06b748e17b6dd56874ab823e5b027c233b2fbf00360369f85",
+			"urls": [
+				"bzz-raw://65425fcaf1a34bb65fb324442b4e9a9349d8e8ac082111aac5ef495a0f9c5458",
+				"dweb:/ipfs/QmdHNwSY9MeomRNMpGjzH8ucrx4dQ63mBKWnuu1utkR5GX"
+			]
+		}
+	},
+	"version": 1
+}

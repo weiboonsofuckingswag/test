@@ -1,0 +1,252 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\weibo\\Desktop\\Sprint 4\\contracts\\alarm.sol": {
+      "lastModificationDate": 1669619729372,
+      "contentHash": "1d67522615f7d93254060f865b2ec2a9",
+      "sourceName": "contracts/alarm.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "Alarm"
+      ]
+    },
+    "C:\\Users\\weibo\\Desktop\\Sprint 4\\contracts\\clientfactory.sol": {
+      "lastModificationDate": 1669619729372,
+      "contentHash": "417d82e819a0ce6be9307e23b1179a8b",
+      "sourceName": "contracts/clientfactory.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "PolicySmartContract",
+        "SmartContractFactory"
+      ]
+    },
+    "C:\\Users\\weibo\\Desktop\\Sprint 4\\contracts\\mapping.sol": {
+      "lastModificationDate": 1669619729372,
+      "contentHash": "e18c798d9a21c3ca3e625fecd4752a44",
+      "sourceName": "contracts/mapping.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "Mapping"
+      ]
+    },
+    "C:\\Users\\weibo\\Desktop\\FYPJ\\Sprint 1\\Week 2\\Create Policy\\Sprint 4\\contracts\\clientfactory.sol": {
+      "lastModificationDate": 1670554270194,
+      "contentHash": "417d82e819a0ce6be9307e23b1179a8b",
+      "sourceName": "contracts/clientfactory.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "PolicySmartContract",
+        "SmartContractFactory"
+      ]
+    },
+    "C:\\Users\\weibo\\Desktop\\FYPJ\\Sprint 1\\Week 2\\Create Policy\\Sprint 4\\contracts\\mapping.sol": {
+      "lastModificationDate": 1670689640467,
+      "contentHash": "e18c798d9a21c3ca3e625fecd4752a44",
+      "sourceName": "contracts/mapping.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "Mapping"
+      ]
+    },
+    "C:\\Users\\weibo\\Desktop\\FYPJ\\Sprint 1\\Week 2\\Create Policy\\Sprint 4\\contracts\\alarm.sol": {
+      "lastModificationDate": 1670772112163,
+      "contentHash": "1d67522615f7d93254060f865b2ec2a9",
+      "sourceName": "contracts/alarm.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "Alarm"
+      ]
+    },
+    "C:\\Users\\weibo\\Desktop\\FYPJ\\Sprint 1\\Week 2\\Create Policy\\Sprint 4\\contracts\\firebase.sol": {
+      "lastModificationDate": 1670989864038,
+      "contentHash": "56d9b0dc3e65769dd28a582c1a3318a8",
+      "sourceName": "contracts/firebase.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.9.0"
+      ],
+      "artifacts": [
+        "FirebaseSystem"
+      ]
+    }
+  }
+}
