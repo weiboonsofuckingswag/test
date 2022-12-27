@@ -375,7 +375,314 @@ async function retrieve() {
 
     
 }
+async function retrieveDate(_id) {
 
+    const Web3 = require('web3');
+
+    // Initialize Web3 and connect to a local Ethereum node
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+
+    // // The address of the deployed smart contract
+    // const prompt = require('prompt-sync')();
+    // const contractAddress = prompt("Enter policy ID first: ");
+    const viewId = await payment.getIdview(_id);
+    console.log(viewId);
+    // abi = ["event Policy(PolicySmartContract a, string newMessage, string policy, string duration, string date_of_policy, string phone, string name, string price);"];
+
+    //
+    // Client.on('Policy', async (smartContractAddr, email, policyId, duration, date_of_policy, phone, name, price) => {
+    //     console.log(smartContractAddr, "---------------------------------------");
+    //     console.log(policyId, "-------------------------------------------");
+    // })
+
+    // The ABI of the smart contract
+    const abi = [
+        {
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "newMessage",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_policy",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_duration",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_date_of_policy",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_phone",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_price",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "newMessage",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "policy",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "duration",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "date_of_policy",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "phone",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "price",
+                    "type": "string"
+                }
+            ],
+            "name": "_updatedMessages",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "date_of_policy",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "duration",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getDate_of_policy",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getDuration",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getEmailAddress",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getName",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getPhone",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getPolicy",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getPrice",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "message",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "name",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "phone",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "policy",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "price",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+
+    // Create an instance of the contract using the ABI and contract address
+    const contract = new web3.eth.Contract(abi, viewId);
+
+    contract.methods.date_of_policy().call((error, result) => {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(`Date of policy: ${result}`);
+        }
+    });    
+}
 module.exports = {
     retrieve //inputValues
+    ,retrieveDate
   }
