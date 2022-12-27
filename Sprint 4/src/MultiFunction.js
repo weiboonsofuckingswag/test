@@ -11,7 +11,7 @@ const signer = new ethers.Wallet("06b91f40bafe25bb97844ca576675d475ad4c197a4acab
 // Contract
 const payment = new ethers.Contract("0x8CdaF0CD259887258Bc13a92C0a6dA92698644C0", contract.abi, signer);
 const firebase = new ethers.Contract("0xf204a4Ef082f5c04bB89F7D5E6568B796096735a", contract4.abi, signer);
-const rpadaily2 = require('./rpadaily2');
+
 
 
 
@@ -26,6 +26,7 @@ async function multiFunction() {
     const payment1 = require('./payment.js');
     const retrieve = require('./retrieve.js');
     const prompt = require('prompt-sync')();
+    const retrievedate = require('./retrievedate.js');
 
     console.log("1. Create client policy");
     console.log("2. Payment");
@@ -35,7 +36,6 @@ async function multiFunction() {
 
     if (promptFunction == 1) {
         clientInfo.storebesu();
-                console.log(`The updated time is: ${rpadaily2.updatedtime}`);
 
     }
     else if (promptFunction == 2) {
@@ -44,22 +44,38 @@ async function multiFunction() {
 
     else if (promptFunction == 3) {
         retrieve.retrieve();
+
     }
-    else if (promptFunction ==4){
-        const policyDate = "2311";
-        const paymentStatus = 1;
+    else if (promptFunction == 4) {
+        const paymentStatuscounter = 3;
         const prompt = require('prompt-sync')();
         const smartContractAddr = prompt("Enter Policy ID: ");
+        const policyDate = await retrieve.retrieveDate(smartContractAddr);
+        const day = policyDate.slice(-2);
+        const month = policyDate.slice(5, 7);
+        const formattedDate = day + month;
         const viewId = await payment.getIdview(smartContractAddr);
-        const addresscheck = await firebase.checkForSpecificAddress(paymentStatus, policyDate, viewId);
-        console.log(smartContractAddr," payment status is: " ,paymentStatus);
-        console.log(`The updated time is: ${rpadaily2.updatedtime}`);
+        // const lengthOfRetrieval = await firebase.retrieveAddress(1, formattedDate);
+        for (let i = 0; i<paymentStatuscounter; i++){
+            const result = await firebase.checkForSpecificAddress(i, formattedDate, viewId);
+            if (result == viewId){
+                console.log("The payment status for policy ID ",smartContractAddr, " is ", i );
+            }
 
+        }
+        // console.log(lengthOfRetrieval);
+        
+            
+        // for (let i = 0; i < paymentStatuscounter; i++) {
+        //     console.log(i);
+        //     console.log(formattedDate);
+        //     console.log(viewId);
+        //     const addresscheck = await firebase.checkForSpecificAddress(i, formattedDate.toString(), viewId);
+        //     console.log(addresscheck);
+        // }
+    
 
-            // console.log(smartContractAddr, " date of policy: ", date);
-    }
-    else {
-        console.log("invalid option, try again.");
+    
     }
 
 }
