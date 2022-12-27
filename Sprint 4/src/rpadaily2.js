@@ -78,9 +78,13 @@ async function testrpa() {
     const viewId = await payment.getIdview(policyId);
     console.log(viewId, " has successfully been paired with", policyId);
     //Test 1
-    const updateStatus = await firebase.storeAddressByPaymentStatus(1, date_of_policy, smartContractAddr);
+    const day = date_of_policy.slice(-2);
+        const month = date_of_policy.slice(5, 7);
+        const formatteddop = day + month;
+    const updateStatus = await firebase.storeAddressByPaymentStatus(1, formatteddop, smartContractAddr);
       await updateStatus.wait();
-      const result = await firebase.checkForSpecificAddress(1, date_of_policy, smartContractAddr);
+      const result = await firebase.checkForSpecificAddress(1, formatteddop, smartContractAddr);
+      console.log(formatteddop, smartContractAddr);
       console.log(result, "'s payment status has been stored as Paid (1).");
 
     console.log("................");
@@ -136,12 +140,15 @@ async function testrpa() {
       now = then
       const updatedformattedtime = date.format(now, 'DDMM'); // Updated Time
       console.log("Updated Date =", updatedformattedtime);
-      console.log(`Updated time in rpadaily2.js: ${updatedtime}`);
-      module.exports.updatedtime = updatedtime;
+      const updatedTimeObject = {
+        updatedtime: updatedformattedtime
+      };
+      module.exports = updatedTimeObject;
+      console.log(updatedTimeObject, "hiiiiiiiiiiiiiiiiiiiiiiiiii")
 
-
-      updatedtime.setDate(updatedtime.getDate() - 1);
-      const updatedformattedtime2 = date.format(updatedtime, 'DDMM'); // Updated Time
+      const newtime = updatedtime;
+      // newtime.setDate(updatedtime.getDate() - 1);
+      const updatedformattedtime2 = date.format(newtime, 'DDMM'); // Updated Time
       console.log("test 1", updatedformattedtime);
       console.log("test 2", updatedformattedtime2);
       
