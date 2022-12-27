@@ -49,24 +49,43 @@ initializeApp(firebaseConfig)
 // init services 
 const db = getFirestore()
 
+async function incrementPlus() {
+  // Call the "Add" function on the AlarmContract and pass in the value you want to increment by
+  const transaction = await AlarmContract.Add(1);
+
+  // Wait for the transaction to be mined
+  await transaction.wait();
+
+  // Get the updated value of "plus"
+  const plus = await AlarmContract.getInput();
+
+  console.log(`plus is now ${plus}`);
+}
+
 
 async function testrpa() {
   abi = ["event Plus(uint plus)"];
   abi = ["event Policy(PolicySmartContract a, string newMessage, string policy, string duration, string date_of_policy, string phone, string name, string price);"];
-  abi = ["event Map(address contractAddress"]; 
+  abi = ["event Map(address contractAddress"];
 
   console.log("Waiting for event");
-  
+
   Client.on('Policy', async (smartContractAddr, email, policyId, duration, date_of_policy, phone, name, price) => {
     console.log("Policy Id:", policyId);
     console.log("Smart Contract Address:", smartContractAddr);
     const txc = await payment.setId(policyId, smartContractAddr);
     await txc.wait();
     const viewId = await payment.getIdview(policyId);
-    console.log(viewId," has successfully been paired with", policyId);  
+    console.log(viewId, " has successfully been paired with", policyId);
+    //Test 1
+    const updateStatus = await firebase.storeAddressByPaymentStatus(1, date_of_policy, smartContractAddr);
+      await updateStatus.wait();
+      const result = await firebase.checkForSpecificAddress(1, date_of_policy, smartContractAddr);
+      console.log(result, "'s payment status has been stored as Paid (1).");
+
     console.log("................");
-    const policyDate = new Date(date_of_policy);     
-    const policyDate1 = date.format(policyDate, 'DDMM');   
+    const policyDate = new Date(date_of_policy);
+    const policyDate1 = date.format(policyDate, 'DDMM');
     const policyDate2 = date.format(policyDate, 'DD/MM/YYYY');
     console.log("Date of Policy:", policyDate2);
     console.log("DDMM =>", policyDate1);
@@ -76,8 +95,8 @@ async function testrpa() {
   payment.on('Map', async (smartContractAddr) => {
     const newClient = new ethers.Contract(smartContractAddr, contract3.abi, signer1);
     const getPolicyDate = await newClient.getDate_of_policy();
-    const policyDate = new Date(getPolicyDate);     
-    const policyDate1 = date.format(policyDate, 'DDMM');   
+    const policyDate = new Date(getPolicyDate);
+    const policyDate1 = date.format(policyDate, 'DDMM');
     const policyDate2 = date.format(policyDate, 'DD/MM/YYYY');
     console.log("Date of Policy:", policyDate2);
     console.log("DDMM =>", policyDate1);
@@ -86,73 +105,76 @@ async function testrpa() {
     await setDoc(doc(db, '1', 'paid', policyDate1, smartContractAddr), {}) // Add to Paid
     await deleteDoc(doc(db, '0', 'unpaid', policyDate1, smartContractAddr), {}) // Remove from Unpaid
 
+    //Test 4
     const addresscheck = await firebase.checkForSpecificAddress(0, policyDate1, smartContractAddr);
-  if (addresscheck == smartContractAddr) {
-    const paymentStatus = await firebase.removeAddressToChangeAddress(0, policyDate1, smartContractAddr);
-    await paymentStatus.wait();
-    const updateStatus = await firebase.storeAddressByPaymentStatus(1, policyDate1, smartContractAddr);
-    await updateStatus.wait();
-    const result = await firebase.checkForSpecificAddress(1,policyDate1, smartContractAddr);
-    console.log(result, "'s payment status has been updated from 0 to 1.");
-  }
-  // // //test data
-  // // await firebase.storeAddressByPaymentStatus(2, 2412, 0xF093C5A67aa483923Ff5AA96D16fCa851F16392D);
-
-  // // //test data
-  const addresscheck2 = await firebase.checkForSpecificAddress(2, policyDate1, smartContractAddr);
-  if (addresscheck2 == smartContractAddr) {
-    const paymentStatus = await firebase.removeAddressToChangeAddress(2, policyDate1, smartContractAddr);
-    await paymentStatus.wait();
-    const updateStatus = await firebase.storeAddressByPaymentStatus(0, policyDate1, smartContractAddr);
-    await updateStatus.wait();
-    const result = await firebase.checkForSpecificAddress(0,policyDate1, smartContractAddr);
-    console.log(result, "'s payment status has been updated from 2 to 0.");
-  }
-})
+    if (addresscheck == smartContractAddr) {
+      const paymentStatus = await firebase.removeAddressToChangeAddress(0, policyDate1, smartContractAddr);
+      await paymentStatus.wait();
+      const updateStatus = await firebase.storeAddressByPaymentStatus(1, policyDate1, smartContractAddr);
+      await updateStatus.wait();
+      const result = await firebase.checkForSpecificAddress(1, policyDate1, smartContractAddr);
+      console.log(result, "'s payment status has been updated from Unpaid(0) to Paid(1).");
+    }
+   
+  })
 
 
-  let now = new Date('2022,12,23'); 
+  let now = new Date('2022,10,10');
   const currenttime = date.format(now, 'DD/MM/YYYY');
   console.log("Current Time =", currenttime);
   console.log("..................");
-
-
+  
+  setInterval(incrementPlus, 40000);
 
   AlarmContract.on('Plus', async (plus) => {
     if (plus != 25) {
+
+      
+
       const updatedtime = date.addDays(now, 1);
       const then = new Date(updatedtime);
-      now = then 
+      now = then
       const updatedformattedtime = date.format(now, 'DDMM'); // Updated Time
       console.log("Updated Date =", updatedformattedtime);
+      console.log(`Updated time in rpadaily2.js: ${updatedtime}`);
+      module.exports.updatedtime = updatedtime;
 
-      const lengthOfRetrieval2 = await firebase.retrieveAddress(0, updatedformattedtime.toString());
-    for (let i = 0; i < lengthOfRetrieval2.length; i++) {
-      const tempAddr2 = lengthOfRetrieval2[i];
-      if (tempAddr2 != 0x0000000000000000000000000000000000000000) {
-        const status0to2delete = await firebase.removeAddressToChangeAddress(0, updatedformattedtime.toString(), tempAddr2);
-        await status0to2delete.wait();
-        const status0to2store = await firebase.storeAddressByPaymentStatus(2, updatedformattedtime.toString(), tempAddr2);
-        await status0to2store.wait();
-        const addrUpdateMsg = await firebase.checkForSpecificAddress(2, updatedformattedtime.toString(), tempAddr2);
-        console.log(addrUpdateMsg, "'s payment status has been updated from 0 to 2.");
+
+      updatedtime.setDate(updatedtime.getDate() - 1);
+      const updatedformattedtime2 = date.format(updatedtime, 'DDMM'); // Updated Time
+      console.log("test 1", updatedformattedtime);
+      console.log("test 2", updatedformattedtime2);
+      
+
+      //Test 3
+      const lengthOfRetrieval2 = await firebase.retrieveAddress(0, updatedformattedtime2.toString());
+      console.log(lengthOfRetrieval2);
+      for (let i = 0; i < lengthOfRetrieval2.length; i++) {
+        const tempAddr2 = lengthOfRetrieval2[i];
+        if (tempAddr2 != 0x0000000000000000000000000000000000000000) {
+          const status0to2delete = await firebase.removeAddressToChangeAddress(0, updatedformattedtime2.toString(), tempAddr2);
+          await status0to2delete.wait();
+          const status0to2store = await firebase.storeAddressByPaymentStatus(2, updatedformattedtime2.toString(), tempAddr2);
+          await status0to2store.wait();
+          const addrUpdateMsg = await firebase.checkForSpecificAddress(2, updatedformattedtime2.toString(), tempAddr2);
+          console.log(addrUpdateMsg, "'s payment status has been updated from Unpaid(0) to Overdue(2).");
+        }
+
       }
 
-    }
-
-    // updates all from paid to unpaid that has current date's date of policy.
-    const lengthOfRetrieval = await firebase.retrieveAddress(1, updatedformattedtime.toString());
-    for (let i = 0; i < lengthOfRetrieval.length; i++) {
-      const tempAddr = lengthOfRetrieval[i];
-      if (tempAddr != 0x0000000000000000000000000000000000000000) {
-        const status1to0delete = await firebase.removeAddressToChangeAddress(1, updatedformattedtime.toString(), tempAddr);
-        await status1to0delete.wait();
-        const status1to0store = await firebase.storeAddressByPaymentStatus(0, updatedformattedtime.toString(), tempAddr);
-        await status1to0store.wait();
-        const addrUpdateMsg = await firebase.checkForSpecificAddress(0, updatedformattedtime.toString(), tempAddr);
-        console.log(addrUpdateMsg, "'s payment status has been updated from 1 to 0.");
+      //Test 2
+      const lengthOfRetrieval = await firebase.retrieveAddress(1, updatedformattedtime2.toString());
+      for (let i = 0; i < lengthOfRetrieval.length; i++) {
+        const tempAddr = lengthOfRetrieval[i];
+        if (tempAddr != 0x0000000000000000000000000000000000000000) {
+          const status1to0delete = await firebase.removeAddressToChangeAddress(1, updatedformattedtime2.toString(), tempAddr);
+          await status1to0delete.wait();
+          const status1to0store = await firebase.storeAddressByPaymentStatus(0, updatedformattedtime2.toString(), tempAddr);
+          await status1to0store.wait();
+          const addrUpdateMsg = await firebase.checkForSpecificAddress(0, updatedformattedtime2.toString(), tempAddr);
+          console.log(addrUpdateMsg, "'s payment status has been updated from Paid(1) to Unpaid(0).");
+        }
       }
-    }
 
       //now.setDate(now.getDate() - 1); // Minus 1 Day to the Date 
 
@@ -179,19 +201,20 @@ async function testrpa() {
       now.setDate(now.getDate() + 3);
 
       const colRef = collection(db, '1', 'paid', updatedformattedtime); // Final Check = Updated Time
-      
+
       const subscribe = onSnapshot(colRef, async (querySnapshot) => {
-          const contractAddress = [];
-      querySnapshot.forEach((doc) => {
-        contractAddress.push(doc.id);
-        console.log(contractAddress);
-      });
-      for (index = 0; index < contractAddress.length; index++) {
+        const contractAddress = [];
+        querySnapshot.forEach((doc) => {
+          contractAddress.push(doc.id);
+          console.log(contractAddress);
+        });
+        for (index = 0; index < contractAddress.length; index++) {
           //await setDoc(doc(db, '0', 'unpaid', updatedformattedtime, contractAddress[index]), {}); // Final Check 
           //await deleteDoc(doc(db, '1', "paid", updatedformattedtime, contractAddress[index]), {}); // Update Paid to Unpaid
           //console.log(contractAddress[index], "has been successfully reset from paid to unpaid");
           console.log("rpaDaily.js payment status has already been set to 0 by default for demo purposes");
-      }});
+        }
+      });
 
       const colRefNoti1 = collection(db, '0', 'unpaid', notification1);
       const colRefNoti2 = collection(db, '0', 'unpaid', notification2);
@@ -199,7 +222,7 @@ async function testrpa() {
       const colRefOverdue = collection(db, '0', 'unpaid', overdue);
 
       const subscribe1 = onSnapshot(colRefNoti1, async (querySnapshot) => {
-          const address1 = [];
+        const address1 = [];
         querySnapshot.forEach((doc) => {
           address1.push(doc.id);
         });
@@ -209,24 +232,24 @@ async function testrpa() {
           const name = await emailClient.getName();
           const price = await emailClient.getPrice();
           const message = {
-              to: '112233eeeeeeeeee112233@gmail.com',
-              // from: 'ishangill2003@gmail.com',
-              from: {
-                  name: 'Enterprise Insurance Agency',
-                  email: 'ishangill2003@gmail.com'
-              },
-              subject: 'Insurance Premium Payment Reminder',
-              body: 'Insurance Premium Payment Reminder',
-              html: '<h4>Dear '+name+'<h4/> <br><br> <p>This is your 1st Notification Reminder to inform you that you have yet to pay your insurance premium costing '+price+' per annum<p/>'
+            to: '112233eeeeeeeeee112233@gmail.com',
+            // from: 'ishangill2003@gmail.com',
+            from: {
+              name: 'Enterprise Insurance Agency',
+              email: 'ishangill2003@gmail.com'
+            },
+            subject: 'Insurance Premium Payment Reminder',
+            body: 'Insurance Premium Payment Reminder',
+            html: '<h4>Dear ' + name + '<h4/> <br><br> <p>This is your 1st Notification Reminder to inform you that you have yet to pay your insurance premium costing ' + price + ' per annum<p/>'
           };
-          
+
           sgMail
-          .send(message)
-          .then((response) => console.log('Email sent...'))
-          .catch((error) => console.log(error.message));
+            .send(message)
+            .then((response) => console.log('Email sent...'))
+            .catch((error) => console.log(error.message));
         }
       });
-      
+
 
       const subscribe2 = onSnapshot(colRefNoti2, async (querySnapshot) => {
         const address2 = [];
@@ -239,21 +262,21 @@ async function testrpa() {
           const name = await emailClient.getName();
           const price = await emailClient.getPrice();
           const message = {
-              to: '112233eeeeeeeeee112233@gmail.com',
-              // from: 'ishangill2003@gmail.com',
-              from: {
-                  name: 'Enterprise Insurance Agency',
-                  email: 'ishangill2003@gmail.com'
-              },
-              subject: 'Insurance Premium Payment Reminder',
-              body: 'Insurance Premium Payment Reminder',
-              html: '<h4>Dear '+name+'<h4/> <br><br> <p>This is your 2nd Notification Reminder to inform you that you have yet to pay your insurance premium costing '+price+' per annum<p/>'
+            to: '112233eeeeeeeeee112233@gmail.com',
+            // from: 'ishangill2003@gmail.com',
+            from: {
+              name: 'Enterprise Insurance Agency',
+              email: 'ishangill2003@gmail.com'
+            },
+            subject: 'Insurance Premium Payment Reminder',
+            body: 'Insurance Premium Payment Reminder',
+            html: '<h4>Dear ' + name + '<h4/> <br><br> <p>This is your 2nd Notification Reminder to inform you that you have yet to pay your insurance premium costing ' + price + ' per annum<p/>'
           };
-          
+
           sgMail
-          .send(message)
-          .then((response) => console.log('Email sent...'))
-          .catch((error) => console.log(error.message));
+            .send(message)
+            .then((response) => console.log('Email sent...'))
+            .catch((error) => console.log(error.message));
         }
       });
 
@@ -268,21 +291,21 @@ async function testrpa() {
           const name = await emailClient.getName();
           const price = await emailClient.getPrice();
           const message = {
-              to: '112233eeeeeeeeee112233@gmail.com',
-              // from: 'ishangill2003@gmail.com',
-              from: {
-                  name: 'Enterprise Insurance Agency',
-                  email: 'ishangill2003@gmail.com'
-              },
-              subject: 'Insurance Premium Payment Reminder',
-              body: 'Insurance Premium Payment Reminder',
-              html: '<h4>Dear '+name+'<h4/> <br><br> <p>This is your Final Notification Reminder to inform you that you have yet to pay your insurance premium costing '+price+' per annum<p/>'
+            to: '112233eeeeeeeeee112233@gmail.com',
+            // from: 'ishangill2003@gmail.com',
+            from: {
+              name: 'Enterprise Insurance Agency',
+              email: 'ishangill2003@gmail.com'
+            },
+            subject: 'Insurance Premium Payment Reminder',
+            body: 'Insurance Premium Payment Reminder',
+            html: '<h4>Dear ' + name + '<h4/> <br><br> <p>This is your Final Notification Reminder to inform you that you have yet to pay your insurance premium costing ' + price + ' per annum<p/>'
           };
-          
+
           sgMail
-          .send(message)
-          .then((response) => console.log('Email sent...'))
-          .catch((error) => console.log(error.message));
+            .send(message)
+            .then((response) => console.log('Email sent...'))
+            .catch((error) => console.log(error.message));
         }
       });
 
@@ -297,29 +320,30 @@ async function testrpa() {
           const name = await emailClient.getName();
           const price = await emailClient.getPrice();
           const message = {
-              to: '112233eeeeeeeeee112233@gmail.com',
-              // from: 'ishangill2003@gmail.com',
-              from: {
-                  name: 'Enterprise Insurance Agency',
-                  email: 'ishangill2003@gmail.com'
-              },
-              subject: 'Insurance Premium Payment Reminder',
-              body: 'Insurance Premium Payment Reminder',
-              html: '<h4>Dear '+name+'<h4/> <br><br> <p> Your Insurance premium costing '+price+' per annum has been terminated since payment has not been made! Do Contact our Staff if you are keen on renewing your Insurance Premium.<p/>'
+            to: '112233eeeeeeeeee112233@gmail.com',
+            // from: 'ishangill2003@gmail.com',
+            from: {
+              name: 'Enterprise Insurance Agency',
+              email: 'ishangill2003@gmail.com'
+            },
+            subject: 'Insurance Premium Payment Reminder',
+            body: 'Insurance Premium Payment Reminder',
+            html: '<h4>Dear ' + name + '<h4/> <br><br> <p> Your Insurance premium costing ' + price + ' per annum has been terminated since payment has not been made! Do Contact our Staff if you are keen on renewing your Insurance Premium.<p/>'
           };
-          
+
           sgMail
-          .send(message)
-          .then((response) => console.log('Email sent...'))
-          .catch((error) => console.log(error.message));
-            await setDoc(doc(db, '-1', 'overdue', overdue, address4[index]), {}); // Overdue Check 
-            await deleteDoc(doc(db, '0', "unpaid", overdue, address4[index]), {}); // Update Unpaid to Overdue
-            console.log(address4[index], "has been successfully reset from unpaid to overdue");
+            .send(message)
+            .then((response) => console.log('Email sent...'))
+            .catch((error) => console.log(error.message));
+          await setDoc(doc(db, '-1', 'overdue', overdue, address4[index]), {}); // Overdue Check 
+          await deleteDoc(doc(db, '0', "unpaid", overdue, address4[index]), {}); // Update Unpaid to Overdue
+          console.log(address4[index], "has been successfully reset from unpaid to overdue");
         }
       });
 
 
-    };   
+    };
+
   });
 
 }
