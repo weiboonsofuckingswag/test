@@ -24,6 +24,7 @@ const contract1 = require("../artifacts/contracts/clientFactory.sol/SmartContrac
 const contract2 = require("../artifacts/contracts/mapping.sol/Mapping.json");
 const contract3 = require("../artifacts/contracts/clientfactory.sol/PolicySmartContract.json");
 const contract4 = require("../artifacts/contracts/firebase.sol/FirebaseSystem.json");
+const { get } = require("http");
 // Provider
 const provider = new ethers.providers.WebSocketProvider("ws://localhost:9545");
 // Signer
@@ -49,6 +50,7 @@ initializeApp(firebaseConfig)
 // init services 
 const db = getFirestore()
 
+
 async function incrementPlus() {
   // Call the "Add" function on the AlarmContract and pass in the value you want to increment by
   const transaction = await AlarmContract.Add(1);
@@ -62,6 +64,9 @@ async function incrementPlus() {
   console.log(`plus is now ${plus}`);
 }
 
+function getCurrentTime() {
+  return new Date();
+}
 
 async function testrpa() {
   abi = ["event Plus(uint plus)"];
@@ -109,16 +114,16 @@ async function testrpa() {
     await setDoc(doc(db, '1', 'paid', policyDate1, smartContractAddr), {}) // Add to Paid
     await deleteDoc(doc(db, '0', 'unpaid', policyDate1, smartContractAddr), {}) // Remove from Unpaid
 
-    //Test 4
-    const addresscheck = await firebase.checkForSpecificAddress(0, policyDate1, smartContractAddr);
-    if (addresscheck == smartContractAddr) {
-      const paymentStatus = await firebase.removeAddressToChangeAddress(0, policyDate1, smartContractAddr);
-      await paymentStatus.wait();
-      const updateStatus = await firebase.storeAddressByPaymentStatus(1, policyDate1, smartContractAddr);
-      await updateStatus.wait();
-      const result = await firebase.checkForSpecificAddress(1, policyDate1, smartContractAddr);
-      console.log(result, "'s payment status has been updated from Unpaid(0) to Paid(1).");
-    }
+    // //Test 4
+    // const addresscheck = await firebase.checkForSpecificAddress(0, policyDate1, smartContractAddr);
+    // if (addresscheck == smartContractAddr) {
+    //   const paymentStatus = await firebase.removeAddressToChangeAddress(0, policyDate1, smartContractAddr);
+    //   await paymentStatus.wait();
+    //   const updateStatus = await firebase.storeAddressByPaymentStatus(1, policyDate1, smartContractAddr);
+    //   await updateStatus.wait();
+    //   const result = await firebase.checkForSpecificAddress(1, policyDate1, smartContractAddr);
+    //   console.log(result, "'s payment status has been updated from Unpaid(0) to Paid(1).");
+    // }
    
   })
 
@@ -140,34 +145,29 @@ async function testrpa() {
       now = then
       const updatedformattedtime = date.format(now, 'DDMM'); // Updated Time
       console.log("Updated Date =", updatedformattedtime);
-      const updatedTimeObject = {
-        updatedtime: updatedformattedtime
-      };
-      module.exports = updatedTimeObject;
-      console.log(updatedTimeObject, "hiiiiiiiiiiiiiiiiiiiiiiiiii")
+      
 
-      const newtime = updatedtime;
       // newtime.setDate(updatedtime.getDate() - 1);
-      const updatedformattedtime2 = date.format(newtime, 'DDMM'); // Updated Time
+      const updatedformattedtime2 = date.format(now, 'DDMM'); // Updated Time
       console.log("test 1", updatedformattedtime);
       console.log("test 2", updatedformattedtime2);
       
 
-      //Test 3
-      const lengthOfRetrieval2 = await firebase.retrieveAddress(0, updatedformattedtime2.toString());
-      console.log(lengthOfRetrieval2);
-      for (let i = 0; i < lengthOfRetrieval2.length; i++) {
-        const tempAddr2 = lengthOfRetrieval2[i];
-        if (tempAddr2 != 0x0000000000000000000000000000000000000000) {
-          const status0to2delete = await firebase.removeAddressToChangeAddress(0, updatedformattedtime2.toString(), tempAddr2);
-          await status0to2delete.wait();
-          const status0to2store = await firebase.storeAddressByPaymentStatus(2, updatedformattedtime2.toString(), tempAddr2);
-          await status0to2store.wait();
-          const addrUpdateMsg = await firebase.checkForSpecificAddress(2, updatedformattedtime2.toString(), tempAddr2);
-          console.log(addrUpdateMsg, "'s payment status has been updated from Unpaid(0) to Overdue(2).");
-        }
+      // //Test 3
+      // const lengthOfRetrieval2 = await firebase.retrieveAddress(0, updatedformattedtime2.toString());
+      // console.log(lengthOfRetrieval2);
+      // for (let i = 0; i < lengthOfRetrieval2.length; i++) {
+      //   const tempAddr2 = lengthOfRetrieval2[i];
+      //   if (tempAddr2 != 0x0000000000000000000000000000000000000000) {
+      //     const status0to2delete = await firebase.removeAddressToChangeAddress(0, updatedformattedtime2.toString(), tempAddr2);
+      //     await status0to2delete.wait();
+      //     const status0to2store = await firebase.storeAddressByPaymentStatus(2, updatedformattedtime2.toString(), tempAddr2);
+      //     await status0to2store.wait();
+      //     const addrUpdateMsg = await firebase.checkForSpecificAddress(2, updatedformattedtime2.toString(), tempAddr2);
+      //     console.log(addrUpdateMsg, "'s payment status has been updated from Unpaid(0) to Overdue(2).");
+      //   }
 
-      }
+      // }
 
       //Test 2
       const lengthOfRetrieval = await firebase.retrieveAddress(1, updatedformattedtime2.toString());
@@ -357,6 +357,7 @@ async function testrpa() {
 
 testrpa();
 
+module.exports = getCurrentTime;
 
 
 
